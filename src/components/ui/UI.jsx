@@ -280,9 +280,32 @@ export const Footer = ({ setPage, t }) => (
         <p style={{ fontSize:".81rem", color:t.muted }}>💚 Proudly Made for Indian Teachers 🇮🇳 · © 2025 DG HelpMate. All Rights Reserved.</p>
       </div>
       <div style={{ display:"flex", gap:16, flexWrap:"wrap", alignItems:"center" }}>
-        {[["Privacy Policy","privacy"],["Terms & Conditions","terms"],["Refund Policy","refund"]].map(([label,page])=>(
-          <span key={page} onClick={()=>setPage(page)} style={{ fontSize:".79rem", color:t.muted, cursor:"pointer", textDecoration:"underline" }}>{label}</span>
-        ))}
+{[
+    ["Download App","app"],   // 👈 ye add karo
+  ["Privacy Policy","privacy"],
+  ["Terms & Conditions","terms"],
+  ["Refund Policy","refund"],
+].map(([label,page])=>(
+  <span
+    key={page}
+    onClick={()=>{
+      if(page === "app"){
+        window.open("/app.html", "_blank"); // 👈 redirect
+      } else {
+        setPage(page);
+      }
+    }}
+style={{
+  fontSize:".79rem",
+  color: page==="app" ? "#00e676" : t.muted,
+  cursor:"pointer",
+  textDecoration:"underline",
+  fontWeight: page==="app" ? "700" : "normal"
+}}
+  >
+    {label}
+  </span>
+))}
         <span style={{ fontSize:".81rem", color:t.gold, fontWeight:700 }}>MSME Registered</span>
       </div>
     </div>
