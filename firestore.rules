@@ -1,0 +1,172 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuth() { return request.auth != null; }
+    function isOwner(uid) { return request.auth.uid == uid; }
+    function getRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+    function isAdmin() { return isAuth() && getRole() == "admin"; }
+    function isApproved() {
+      return isAuth() && (getRole() == "client" || getRole() == "student" || getRole() == "admin");
+    }
+
+    match /users/{userId} {
+      allow read:   if isOwner(userId) || isAdmin();
+      allow create: if isAuth() && isOwner(userId);
+      allow update: if isOwner(userId) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /courses/{courseId} {
+      allow read:  if true;
+      allow write: if isAdmin();
+    }
+
+    match /courseModules/{moduleId} {
+      allow read:  if true;
+      allow write: if isAdmin();
+    }
+
+    match /enrollments/{enrollmentId} {
+      allow read:   if isAuth() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow create: if isApproved();
+      allow update: if isAuth() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    match /enrollmentRequests/{reqId} {
+      allow read:   if isAuth() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow create: if isApproved();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /studentNotes/{noteId} {
+      allow read:  if isAuth() && noteId.matches(request.auth.uid + "_.*");
+      allow write: if isAuth() && noteId.matches(request.auth.uid + "_.*");
+    }
+
+    match /orders/{orderId} {
+      allow read:   if isAuth() && (resource.data.userId == request.auth.uid || resource.data.clientId == request.auth.uid || isAdmin());
+      allow create: if isApproved();
+      allow update: if isAuth() && (resource.data.userId == request.auth.uid || resource.data.clientId == request.auth.uid || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    match /clientPayments/{payId} {
+      allow read:   if isAuth() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow create: if isApproved();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /paymentRequests/{reqId} {
+      allow read:   if isAuth() && (resource.data.clientId == request.auth.uid || isAdmin());
+      allow create: if isAdmin();
+      allow update: if isAuth() && (resource.data.clientId == request.auth.uid || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    match /clientFiles/{fileId} {
+      allow read:   if isAuth() && (resource.data.clientId == request.auth.uid || isAdmin());
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /workEntries/{entryId} {
+      allow read:   if isAuth() && (resource.data.clientId == request.auth.uid || isAdmin());
+      allow create: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /chats/{userId}/messages/{msgId} {
+      allow read:   if isAuth() && (isOwner(userId) || isAdmin());
+      allow create: if isAuth() && (isOwner(userId) || isAdmin());
+      allow update: if isAuth() && (isOwner(userId) || isAdmin());
+      allow delete: if isAuth() && (isOwner(userId) || isAdmin());
+    }
+
+    match /chats/{chatId} {
+      allow read:   if isAuth() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow create: if isApproved();
+      allow update: if isAuth() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    match /notifications/{notifId} {
+      allow read:   if isAuth() && (resource.data.toUserId == request.auth.uid || isAdmin());
+      allow create: if isAuth();
+      allow update: if isAuth() && (resource.data.toUserId == request.auth.uid || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    match /quizzes/{quizId} {
+      allow read:  if isApproved();
+      allow write: if isAdmin();
+    }
+
+    match /blogs/{blogId} {
+      allow read:  if true;
+      allow write: if isAdmin();
+    }
+
+    match /blogComments/{commentId} {
+      allow read:   if true;
+      allow create: if isAuth();
+      allow update: if isAuth() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow delete: if isAuth() && (resource.data.userId == request.auth.uid || isAdmin());
+    }
+
+    match /testimonials/{tId} {
+      allow read:  if true;
+      allow write: if isAdmin();
+    }
+
+    match /services/{sId} {
+      allow read:  if true;
+      allow write: if isAdmin();
+    }
+
+    // ── Bundles ── public read, admin write, anyone can increment sales
+    match /bundles/{bundleId} {
+      allow read:   if true;
+      allow create: if isAdmin();
+      allow update: if isAdmin() || (isApproved() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(["sales"]));
+      allow delete: if isAdmin();
+    }
+
+    // ── Materials ── public read for free, approved for paid
+    match /materials/{materialId} {
+      allow read:   if resource.data.type == "free" || isApproved();
+      allow create: if isAdmin();
+      allow update: if isAdmin() || (isAuth() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(["downloads"]));
+      allow delete: if isAdmin();
+    }
+
+    // ── Purchases ── user sees own, admin sees all
+    match /purchases/{purchaseId} {
+      allow read:   if isAuth() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow create: if isAuth();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /coupons/{couponId} {
+      allow read:  if isApproved();
+      allow write: if isApproved();
+    }
+
+    match /siteContent/{docId} {
+      allow read:  if true;
+      allow write: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

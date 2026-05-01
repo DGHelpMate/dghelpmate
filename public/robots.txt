@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://www.dghelpmate.com/sitemap.xml
+
+# Block admin paths from indexing
+Disallow: /admin
+Disallow: /client
+Disallow: /student
