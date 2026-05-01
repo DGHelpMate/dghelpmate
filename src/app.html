@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>DG Helpmate — Smart Teacher Suite | Free Download for Windows</title>
+<meta name="description" content="Create Smart Board PPTs, Notes, and Test Papers for Math, Physics, Chemistry, Hindi, and English in 1 minute.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0914;--bg2:#100f20;--bg3:#1a1830;--bg4:#221f38;
+  --text:#f0eeff;--text2:#b8b4d8;--text3:#6e6a8a;
+  --accent:#F09E07;--accent2:#ffb52a;--accent-soft:rgba(240,158,7,.12);
+  --green:#3DD9A5;--blue:#85b7eb;--purple:#a78bfa;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.14);
+  --r:12px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 5%;height:76px;
+  background:transparent;transition:all .3s ease;
+}
+nav.scrolled{
+  height:64px;background:rgba(10,9,20,.85);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);box-shadow:0 4px 30px rgba(0,0,0,.3);
+}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nav-logo-icon{
+  width:42px;height:42px;border-radius:12px;
+  background:linear-gradient(135deg,var(--bg3),var(--bg2));border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  box-shadow:0 4px 15px rgba(0,0,0,.2);transition:transform .3s ease;
+}
+.nav-logo:hover .nav-logo-icon{transform:scale(1.05) rotate(5deg)}
+.nav-brand{font-size:18px;font-weight:800;color:var(--text);letter-spacing:-.5px}
+.nav-sub{font-size:11px;color:var(--accent);font-weight:600;display:block;line-height:1.2;text-transform:uppercase;letter-spacing:.5px}
+.nav-links{display:flex;align-items:center;gap:8px}
+.nav-links a{color:var(--text2);font-size:14px;font-weight:500;text-decoration:none;padding:8px 16px;border-radius:8px;transition:all .2s}
+.nav-links a:not(.nav-dl):hover{color:var(--text);background:rgba(255,255,255,.05)}
+.nav-dl{background:var(--accent)!important;color:#1a0e00!important;font-weight:700!important;padding:10px 20px!important;border-radius:8px!important;box-shadow:0 4px 15px rgba(240,158,7,.3)}
+.nav-dl:hover{background:var(--accent2)!important;transform:translateY(-2px);box-shadow:0 6px 20px rgba(240,158,7,.4)}
+
+/* ── MOBILE MENU ── */
+.mobile-toggle{display:none;background:transparent;border:none;color:var(--text);font-size:24px;cursor:pointer;z-index:101}
+@media(max-width:768px){
+  .nav-links{
+    position:fixed;top:0;right:-100%;width:100%;height:100vh;
+    background:rgba(10,9,20,.98);backdrop-filter:blur(20px);
+    flex-direction:column;justify-content:center;align-items:center;gap:24px;
+    transition:right .4s cubic-bezier(.4,0,.2,1);
+  }
+  .nav-links.active{right:0}
+  .nav-links a{font-size:20px;padding:12px 24px}
+  .mobile-toggle{display:block}
+}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:140px 5% 80px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-10%;left:50%;transform:translateX(-50%);
+  width:100vw;height:100vh;border-radius:50%;
+  background:radial-gradient(circle,rgba(240,158,7,.15) 0%,rgba(240,158,7,.03) 40%,transparent 70%);
+  pointer-events:none;z-index:-1;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(240,158,7,.1);border:1px solid rgba(240,158,7,.3);backdrop-filter:blur(10px);
+  color:var(--accent);font-size:13px;font-weight:600;
+  padding:6px 20px;border-radius:100px;margin-bottom:28px;
+  animation:fadeUp .6s ease both;
+}
+.hero-badge-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.hero h1{font-size:clamp(40px,7vw,76px);font-weight:900;line-height:1.1;margin-bottom:20px;animation:fadeUp .6s .1s ease both;letter-spacing:-1px}
+.hero h1 span{background:linear-gradient(135deg,var(--accent),#ff9d00,#ffc947);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{max-width:700px;font-size:clamp(16px,2vw,18px);color:var(--text2);margin:0 auto 40px;animation:fadeUp .6s .2s ease both;line-height:1.8}
+.hero-desc strong{color:var(--text)}
+.hero-btns{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;animation:fadeUp .6s .25s ease both;margin-bottom:24px;z-index:2;position:relative}
+.btn-primary{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#1a0e00;font-size:16px;font-weight:800;padding:16px 36px;border-radius:var(--r);text-decoration:none;transition:all .2s;box-shadow:0 8px 32px rgba(240,158,7,.3);position:relative;overflow:hidden}
+.btn-primary::after{content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transition:.5s}
+.btn-primary:hover::after{left:100%}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(240,158,7,.5)}
+.btn-secondary{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.03);backdrop-filter:blur(10px);color:var(--text);font-size:16px;font-weight:600;padding:16px 32px;border-radius:var(--r);text-decoration:none;transition:all .2s;border:1px solid var(--border2)}
+.btn-secondary:hover{border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.08);transform:translateY(-2px)}
+.hero-note{font-size:13px;color:var(--text3);animation:fadeUp .6s .3s ease both;margin-bottom:60px;font-weight:500}
+.hero-note a{color:var(--accent);text-decoration:none;border-bottom:1px dashed var(--accent);padding-bottom:2px}
+
+/* ── MOCKUP ── */
+.mockup-wrap{width:100%;max-width:960px;margin:0 auto;animation:fadeUp .8s .4s ease both;position:relative;perspective:1000px;z-index:2}
+.mockup-glow{position:absolute;inset:-60px;background:radial-gradient(ellipse at 50% 50%,rgba(240,158,7,.15) 0%,transparent 60%);pointer-events:none;z-index:-1}
+.mockup{background:#151325;backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1);border-radius:12px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.05);transform:rotateX(2deg);transition:transform .5s ease}
+.mockup:hover{transform:rotateX(0deg) translateY(-5px);box-shadow:0 40px 100px rgba(0,0,0,.9),0 0 0 1px rgba(240,158,7,.2)}
+.mockup-titlebar{height:44px;background:#1C1930;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid var(--border);gap:12px}
+.m-logo-box{width:28px;height:28px;border-radius:8px;background:transparent;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.m-title{font-size:13px;font-weight:600;color:var(--text)}
+.m-sub{font-size:11px;color:var(--text3)}
+.m-spacer{flex:1}
+.m-dots{display:flex;gap:8px}
+.m-dot{width:12px;height:12px;border-radius:50%;box-shadow:inset 0 1px 2px rgba(0,0,0,.2)}
+.mockup-body{display:flex;height:380px}
+.m-sidebar{width:200px;background:#181628;border-right:1px solid var(--border);padding:16px 0;flex-shrink:0}
+.m-nav{display:flex;flex-direction:column;gap:4px;padding:0 12px}
+.m-nav-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;font-size:12px;font-weight:500;color:var(--text3);transition:all .2s;cursor:pointer}
+.m-nav-item.active{background:rgba(240,158,7,.1);color:var(--accent);font-weight:600}
+.m-nav-ic{width:22px;height:22px;border-radius:6px;background:transparent;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.m-nav-item.active .m-nav-ic{background:var(--accent);color:#000}
+.m-editor{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#100E1C}
+.m-toolbar{height:48px;background:#151325;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;padding:0 20px}
+.m-tb-btn{height:28px;padding:0 12px;border-radius:6px;background:#221f38;border:1px solid var(--border);color:var(--text2);font-size:11px;font-weight:600;cursor:pointer;transition:.2s}
+.m-content{flex:1;padding:30px;font-size:13px;color:var(--text2);font-family:'Consolas','Courier New',monospace;line-height:1.8;overflow-y:auto;text-align:center}
+.m-h1{color:var(--accent);font-size:16px;font-weight:700;margin-bottom:16px}
+.m-h2{color:#85b7eb;font-size:14px;font-weight:600;margin-bottom:12px;margin-top:20px}
+.m-txt{color:#b8b4d8;font-size:13px}
+.m-cursor{display:inline-block;width:8px;height:16px;background:var(--accent);vertical-align:middle;animation:blink 1s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.m-export{height:64px;border-top:1px solid var(--border);background:#181628;display:flex;align-items:center;padding:0 20px;gap:16px}
+.m-fmt-group{display:flex;gap:8px}
+.m-fmt{padding:6px 14px;border-radius:6px;font-size:11px;font-weight:600;color:var(--text3);cursor:pointer;border:1px solid transparent}
+.m-fmt.active{background:rgba(133,183,235,.1);color:var(--blue);border:1px solid rgba(133,183,235,.3)}
+.m-progress{flex:1;height:6px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden;position:relative}
+.m-progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--green));border-radius:3px;transition:width .3s}
+.m-exp-btn{padding:8px 24px;background:var(--green);color:#000;border:none;border-radius:8px;font-size:12px;font-weight:800;cursor:default;transition:.2s;opacity:0;visibility:hidden}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── STATS ── */
+.stats-bar{display:flex;flex-wrap:wrap;background:rgba(16,15,32,.6);backdrop-filter:blur(10px);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.stat-item{flex:1;min-width:180px;padding:36px 24px;text-align:center;border-right:1px solid var(--border);transition:.3s}
+.stat-item:hover{background:rgba(255,255,255,.02)}
+.stat-item:last-child{border-right:none}
+.stat-num{font-size:36px;font-weight:900;background:linear-gradient(135deg,#fff,var(--text2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:8px}
+.stat-lbl{font-size:13px;color:var(--accent);font-weight:600;text-transform:uppercase;letter-spacing:1px}
+
+/* ── SECTION ── */
+section{padding:100px 5%;position:relative}
+.section-tag{display:inline-block;font-size:12px;font-weight:800;color:var(--accent);background:var(--accent-soft);padding:6px 16px;border-radius:100px;margin-bottom:20px;text-transform:uppercase;letter-spacing:1.5px;border:1px solid rgba(240,158,7,.2)}
+.section-title{font-size:clamp(32px,4vw,48px);font-weight:800;line-height:1.2;margin-bottom:16px}
+.section-sub{font-size:18px;color:var(--text2);max-width:700px;line-height:1.7}
+
+/* ── FEATURES ── */
+.features{background:var(--bg)}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;margin-top:60px}
+.feat-card{background:linear-gradient(180deg,var(--bg2) 0%,var(--bg) 100%);border:1px solid var(--border);border-radius:20px;padding:32px;transition:all .4s cubic-bezier(.175,.885,.32,1.275);position:relative;overflow:hidden}
+.feat-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 50% 0%,rgba(240,158,7,.1) 0%,transparent 60%);opacity:0;transition:opacity .4s;z-index:0;pointer-events:none}
+.feat-card:hover{border-color:rgba(240,158,7,.3);transform:translateY(-10px);box-shadow:0 20px 40px rgba(0,0,0,.4)}
+.feat-card:hover::before{opacity:1}
+.feat-content{position:relative;z-index:1}
+.feat-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:24px;background:var(--bg3);border:1px solid var(--border2);box-shadow:0 4px 15px rgba(0,0,0,.2);transition:.3s}
+.feat-card:hover .feat-icon{transform:scale(1.1) rotate(-5deg);background:var(--accent-soft);border-color:rgba(240,158,7,.3)}
+.feat-title{font-size:20px;font-weight:700;margin-bottom:12px;color:#fff}
+.feat-desc{font-size:15px;color:var(--text3);line-height:1.7}
+.feat-tag{display:inline-block;font-size:11px;font-weight:700;padding:4px 12px;border-radius:100px;margin-top:20px;background:rgba(61,217,165,.1);color:var(--green);border:1px solid rgba(61,217,165,.2)}
+
+/* ── HOW IT WORKS ── */
+.how{background:radial-gradient(circle at center,var(--bg2) 0%,var(--bg) 100%)}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:40px;margin-top:60px;position:relative}
+.steps::before{content:'';position:absolute;top:35px;left:16.6%;right:16.6%;height:2px;background:linear-gradient(90deg,transparent,var(--accent),var(--blue),var(--green),transparent);opacity:.3}
+.step{text-align:center;padding:0 20px;position:relative}
+.step-num{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#ff9d00);color:#1a0e00;font-size:24px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;box-shadow:0 0 0 8px var(--bg),0 10px 30px rgba(240,158,7,.4);position:relative;z-index:1;transition:.3s}
+.step:hover .step-num{transform:scale(1.1)}
+.step-title{font-size:18px;font-weight:700;margin-bottom:12px;color:#fff}
+.step-desc{font-size:14px;color:var(--text3);line-height:1.7}
+
+/* ── PRICING ── */
+.pricing{background:var(--bg2);position:relative;overflow:hidden}
+.pricing::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(240,158,7,.05) 0%,transparent 60%);pointer-events:none}
+.pricing-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:30px;margin-top:60px;position:relative;z-index:2}
+
+.price-card{flex:1;min-width:320px;max-width:450px;background:rgba(26,24,48,.8);backdrop-filter:blur(20px);border:1px solid var(--border2);border-radius:24px;padding:40px;text-align:center;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.3);transition:transform .3s;display:flex;flex-direction:column}
+.price-card:hover{transform:translateY(-5px);box-shadow:0 30px 80px rgba(0,0,0,.4)}
+
+.price-card.premium{border:2px solid var(--accent);box-shadow:0 20px 80px rgba(240,158,7,.15);transform:scale(1.02)}
+.price-card.premium:hover{transform:scale(1.02) translateY(-5px);box-shadow:0 30px 100px rgba(240,158,7,.25)}
+
+.price-badge{position:absolute;top:0;left:50%;transform:translate(-50%,-50%);background:linear-gradient(90deg,var(--accent),#ffc947);color:#1a0e00;font-size:13px;font-weight:800;padding:8px 24px;border-radius:100px;text-transform:uppercase;letter-spacing:1px;box-shadow:0 4px 15px rgba(240,158,7,.4)}
+.price-title{font-size:24px;font-weight:800;margin-bottom:8px;color:#fff}
+.price-sub{font-size:14px;color:var(--text2);margin-bottom:32px;font-weight:500;min-height:42px}
+.price-amount{font-size:56px;font-weight:900;color:var(--accent);line-height:1;letter-spacing:-2px}
+.price-amount span{font-size:20px;vertical-align:super;opacity:.8}
+.price-period{font-size:13px;color:var(--text3);margin-top:8px;margin-bottom:32px;font-weight:500}
+.price-features{text-align:left;margin-bottom:40px;background:rgba(0,0,0,.2);padding:24px;border-radius:16px;border:1px solid rgba(255,255,255,.03);flex:1}
+.price-feat{display:flex;align-items:flex-start;gap:12px;padding:10px 0;font-size:14px;color:var(--text);line-height:1.5}
+.price-feat:not(:last-child){border-bottom:1px dashed rgba(255,255,255,.05)}
+.price-feat-ic{color:var(--green);font-size:14px;flex-shrink:0;background:rgba(61,217,165,.1);width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:50%;margin-top:2px}
+
+.price-wa-btn{display:inline-flex;align-items:center;gap:8px;background:transparent;border:2px solid var(--accent);color:var(--text);font-size:16px;font-weight:700;padding:16px 36px;border-radius:var(--r);text-decoration:none;transition:all .2s;width:100%;justify-content:center;cursor:pointer}
+.price-wa-btn:hover{background:rgba(240,158,7,.1);color:#fff;transform:translateY(-2px)}
+
+.price-wa-btn.solid{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#1a0e00;border:none;box-shadow:0 8px 32px rgba(240,158,7,.3)}
+.price-wa-btn.solid:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(240,158,7,.5);color:#1a0e00}
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(10, 9, 20, 0.9); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2000; opacity: 0; visibility: hidden; transition: 0.3s ease;
+}
+.modal-overlay.active { opacity: 1; visibility: visible; }
+.modal-content {
+  background: var(--bg3); padding: 36px 30px; border-radius: 20px;
+  width: 90%; max-width: 420px; border: 1px solid var(--border2);
+  position: relative; transform: translateY(20px); transition: 0.3s ease;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.05);
+}
+.modal-overlay.active .modal-content { transform: translateY(0); }
+.modal-close { position: absolute; top: 16px; right: 20px; font-size: 28px; cursor: pointer; color: var(--text3); transition: 0.2s; background: none; border: none; }
+.modal-close:hover { color: #fff; transform: scale(1.1); }
+.modal-content h3 { font-size: 22px; margin-bottom: 8px; color: #fff; font-weight: 800; }
+.modal-content p { font-size: 14px; color: var(--text2); margin-bottom: 24px; line-height: 1.5; }
+.form-group { margin-bottom: 16px; }
+.form-input {
+  width: 100%; padding: 14px 16px; border-radius: 10px;
+  border: 1px solid var(--border2); background: var(--bg2); color: #fff;
+  font-family: 'Inter', sans-serif; font-size: 14px; transition: 0.2s;
+}
+.form-input:focus { outline: none; border-color: var(--accent); background: rgba(240,158,7,0.05); box-shadow: 0 0 0 4px rgba(240,158,7,0.1); }
+
+/* ── FAQ ── */
+.faq{background:var(--bg)}
+.faq-list{max-width:760px;margin:60px auto 0;display:flex;flex-direction:column;gap:12px}
+.faq-item{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:.3s}
+.faq-item:hover{border-color:rgba(255,255,255,.15)}
+.faq-q{padding:24px;font-size:16px;font-weight:600;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:background .2s;gap:16px;color:#fff}
+.faq-item.open .faq-q{background:rgba(255,255,255,.02);color:var(--accent)}
+.faq-arrow{font-size:12px;color:var(--text3);flex-shrink:0;transition:transform .3s cubic-bezier(.4,0,.2,1);width:24px;height:24px;background:var(--bg4);display:flex;align-items:center;justify-content:center;border-radius:50%}
+.faq-item.open .faq-arrow{transform:rotate(180deg);background:var(--accent-soft);color:var(--accent)}
+.faq-a{padding:0 24px;max-height:0;overflow:hidden;font-size:15px;color:var(--text3);line-height:1.8;transition:max-height .3s ease,padding .3s ease,opacity .3s ease;opacity:0}
+.faq-item.open .faq-a{max-height:300px;padding:0 24px 24px;opacity:1}
+
+/* ── DOWNLOAD CTA ── */
+.download-cta{background:linear-gradient(180deg,var(--bg2) 0%,var(--bg) 100%);border-top:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center;padding:120px 5%;position:relative;overflow:hidden}
+.download-cta::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(240,158,7,.1) 0%,transparent 60%);pointer-events:none}
+.cta-title{font-size:clamp(36px,5vw,56px);font-weight:900;margin-bottom:20px;letter-spacing:-1px}
+.cta-sub{font-size:18px;color:var(--text2);margin-bottom:48px;max-width:600px;margin-left:auto;margin-right:auto;line-height:1.6}
+.dl-info{display:flex;flex-wrap:wrap;justify-content:center;gap:24px;margin-top:36px;font-size:14px;color:var(--text3);background:rgba(0,0,0,.2);display:inline-flex;padding:16px 32px;border-radius:100px;border:1px solid rgba(255,255,255,.05)}
+.dl-info span{display:flex;align-items:center;gap:8px}
+.dl-info b{color:#fff;font-weight:600}
+.chrome-notice{background:rgba(240,158,7,.08);border:1px solid rgba(240,158,7,.2);border-radius:12px;padding:16px 24px;margin-top:24px;font-size:14px;color:var(--text2);text-align:center;max-width:600px;margin-left:auto;margin-right:auto;backdrop-filter:blur(10px)}
+.chrome-notice strong{color:var(--accent)}
+
+/* ── FOOTER ── */
+footer{background:var(--bg);padding:80px 5% 32px;position:relative;overflow:hidden;border-top:1px solid var(--border)}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:60px;position:relative;z-index:1}
+.footer-brand{max-width:320px}
+.footer-logo{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.footer-logo-icon{width:42px;height:42px;background:var(--bg3);border:1px solid var(--border2);border-radius:12px;display:flex;align-items:center;justify-content:center}
+.footer-title{font-size:18px;font-weight:800;color:#fff}
+.footer-desc{font-size:14px;color:var(--text3);line-height:1.8}
+.footer-col h4{font-size:13px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:1px;margin-bottom:20px}
+.footer-col a{display:block;font-size:14px;color:var(--text3);text-decoration:none;margin-bottom:12px;transition:.2s}
+.footer-col a:hover{color:var(--accent);transform:translateX(5px)}
+.footer-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;padding-top:32px;border-top:1px solid var(--border);font-size:13px;color:var(--text3);position:relative;z-index:1}
+.footer-wa{display:inline-flex;align-items:center;gap:8px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.3);color:#25D366;font-size:13px;font-weight:600;padding:8px 20px;border-radius:100px;text-decoration:none;transition:all .2s}
+.footer-wa:hover{background:rgba(37,211,102,.2);color:#fff}
+
+#backToTop{position:fixed;bottom:30px;right:30px;width:50px;height:50px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;visibility:hidden;transition:.3s;z-index:99;box-shadow:0 4px 15px rgba(0,0,0,.3);font-size:20px}
+#backToTop.show{opacity:1;visibility:visible}
+#backToTop:hover{background:var(--accent);color:#000;transform:translateY(-5px)}
+
+@media(max-width:1024px){.footer-top{grid-template-columns:1fr 1fr}.price-card.premium{transform:scale(1)}}
+@media(max-width:768px){section{padding:80px 5%}.mockup-body{height:auto;min-height:250px;flex-direction:column}.m-sidebar{width:100%;border-right:none;border-bottom:1px solid var(--border);padding:8px;display:flex;overflow-x:auto}.m-nav{flex-direction:row}.steps::before{display:none}.steps{gap:40px}.footer-top{grid-template-columns:1fr;gap:30px}.dl-info{flex-direction:column;align-items:center;gap:12px;border-radius:16px}}
+@media(max-width:480px){.hero h1{font-size:32px}.stats-bar{flex-direction:column}.stat-item{border-right:none;border-bottom:1px solid var(--border);padding:24px}.price-card{padding:32px 20px}.cta-title{font-size:30px}}
+
+.reveal{opacity:0;transform:translateY(40px);transition:all .8s cubic-bezier(.165,.84,.44,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">
+      <!-- FIXED LOGO: Exact 4-color code -->
+      <svg viewBox="0 0 186 194" width="26" height="26" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#040403" d="M13.75 98.66C13.86 89.91 14.5 81.31 20.13 73.99 20.84 73.07 21.44 72.04 22.26 71.23 38.53 54.99 54.51 38.45 71.21 22.66 85.2 9.43 104.49 9.73 118.45 23.09 134.81 38.75 150.86 54.75 166.63 71.01 175.65 80.31 176.76 91.95 173.53 104.77 170.22 109.75 167.83 114.67 164.21 118.39 149.58 133.42 134.6 148.1 119.69 162.84 104.88 177.48 84.22 177.43 69.38 162.75 56.72 150.23 44.27 137.49 31.44 125.14 23.55 117.55 16.28 109.74 13.75 98.66Z"/>
+        <path fill="#F09E07" d="M13.51 98.98C16.28 109.74 23.55 117.55 31.44 125.14 44.27 137.49 56.72 150.23 69.38 162.75 84.22 177.43 104.88 177.48 119.69 162.84 134.6 148.1 149.58 133.42 164.21 118.39 167.83 114.67 170.22 109.75 173.45 105.19 175.23 116.02 170.77 124.79 163.25 132.31 148.9 146.67 134.07 160.57 120.19 175.36 105.12 191.43 80.83 190.72 66.66 175.47 52.86 160.61 38.02 146.73 23.61 132.45 14.28 123.21 10.48 112.29 13.51 98.98Z"/>
+        <path fill="#F8F8F8" d="M138.47 77.54C151.16 90.22 151.15 102.09 138.68 114.5 129.83 123.31 120.99 132.14 112.1 140.9 101.75 151.09 88.77 151.11 78.46 140.95 68.97 131.6 59.51 122.21 50.11 112.77 40.04 102.66 40.01 89.64 50.02 79.56 59.41 70.11 68.85 60.71 78.34 51.36 88.81 41.04 101.81 41.13 112.37 51.56 121.02 60.11 129.6 68.71 138.47 77.54Z"/>
+        <path fill="#030303" d="M124.87 86.23C131.37 94.12 131.2 101.42 124.45 108.25 118.24 114.54 111.98 120.76 105.66 126.92 98.74 133.66 90.35 133.74 83.5 127.09 77.04 120.82 70.67 114.47 64.36 108.06 57.83 101.4 57.71 92.89 64.15 86.28 70.54 79.71 77.04 73.25 83.63 66.88 90.26 60.47 98.74 60.5 105.46 66.96 111.94 73.2 118.23 79.63 124.87 86.23Z"/>
+      </svg>
+    </div>
+    <div>
+      <span class="nav-brand">DG Helpmate</span>
+      <span class="nav-sub">Smart Teacher Suite</span>
+    </div>
+  </a>
+  <button class="mobile-toggle" id="mobileToggle">☰</button>
+  <div class="nav-links" id="navLinks">
+    <a href="#features">Features</a>
+    <a href="#how">How it Works</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+    <a href="https://converterdghelpmate.dghelpmate.com/download/DG-Helpmate-Setup-1.0.0.exe" class="nav-dl">⬇ Download Free</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-badge">
+    <span class="hero-badge-dot"></span>
+    DG Helpmate Software — Now Live for Windows!
+  </div>
+  <h1>Create Smart Board PPTs in <span>1 Minute</span></h1>
+  <p class="hero-desc">
+    Stop paying for PPTs! Create Notes, Test Papers, Assignments, and stunning Presentations for 
+    <strong>Math, Physics, Chemistry, Hindi, and English</strong>. Export directly to PPT or Word.
+  </p>
+  <div class="hero-btns">
+    <a href="https://converterdghelpmate.dghelpmate.com/download/DG-Helpmate-Setup-1.0.0.exe" class="btn-primary">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 3v13M6 11l6 6 6-6"/><path d="M3 20h18"/></svg>
+      Free Download App
+    </a>
+    <a href="https://wa.me/919241653369?text=I want to know about DG Helpmate Software" class="btn-secondary" target="_blank">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.374 0 0 5.373 0 12c0 2.136.557 4.135 1.527 5.875L0 24l6.335-1.505A11.945 11.945 0 0012 24c6.626 0 12-5.374 12-12S18.626 0 12 0zm0 21.818a9.8 9.8 0 01-5.032-1.388l-.36-.214-3.742.889.936-3.634-.236-.374A9.783 9.783 0 012.182 12C2.182 6.58 6.579 2.182 12 2.182c5.42 0 9.818 4.398 9.818 9.818 0 5.421-4.398 9.818-9.818 9.818z"/></svg>
+      Ask on WhatsApp
+    </a>
+  </div>
+  <p class="hero-note">✓ Math, Physics, Chemistry, Hindi, English &nbsp;·&nbsp; ✓ Windows 10/11 &nbsp;·&nbsp; <a href="#pricing">See Pricing Options →</a></p>
+
+  <div class="mockup-wrap">
+    <div class="mockup-glow"></div>
+    <div class="mockup">
+      <div class="mockup-titlebar">
+        <div class="m-logo-box">
+          <svg viewBox="0 0 186 194" width="16" height="16" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#040403" d="M13.75 98.66C13.86 89.91 14.5 81.31 20.13 73.99 20.84 73.07 21.44 72.04 22.26 71.23 38.53 54.99 54.51 38.45 71.21 22.66 85.2 9.43 104.49 9.73 118.45 23.09 134.81 38.75 150.86 54.75 166.63 71.01 175.65 80.31 176.76 91.95 173.53 104.77 170.22 109.75 167.83 114.67 164.21 118.39 149.58 133.42 134.6 148.1 119.69 162.84 104.88 177.48 84.22 177.43 69.38 162.75 56.72 150.23 44.27 137.49 31.44 125.14 23.55 117.55 16.28 109.74 13.75 98.66Z"/>
+            <path fill="#F09E07" d="M13.51 98.98C16.28 109.74 23.55 117.55 31.44 125.14 44.27 137.49 56.72 150.23 69.38 162.75 84.22 177.43 104.88 177.48 119.69 162.84 134.6 148.1 149.58 133.42 164.21 118.39 167.83 114.67 170.22 109.75 173.45 105.19 175.23 116.02 170.77 124.79 163.25 132.31 148.9 146.67 134.07 160.57 120.19 175.36 105.12 191.43 80.83 190.72 66.66 175.47 52.86 160.61 38.02 146.73 23.61 132.45 14.28 123.21 10.48 112.29 13.51 98.98Z"/>
+            <path fill="#F8F8F8" d="M138.47 77.54C151.16 90.22 151.15 102.09 138.68 114.5 129.83 123.31 120.99 132.14 112.1 140.9 101.75 151.09 88.77 151.11 78.46 140.95 68.97 131.6 59.51 122.21 50.11 112.77 40.04 102.66 40.01 89.64 50.02 79.56 59.41 70.11 68.85 60.71 78.34 51.36 88.81 41.04 101.81 41.13 112.37 51.56 121.02 60.11 129.6 68.71 138.47 77.54Z"/>
+            <path fill="#030303" d="M124.87 86.23C131.37 94.12 131.2 101.42 124.45 108.25 118.24 114.54 111.98 120.76 105.66 126.92 98.74 133.66 90.35 133.74 83.5 127.09 77.04 120.82 70.67 114.47 64.36 108.06 57.83 101.4 57.71 92.89 64.15 86.28 70.54 79.71 77.04 73.25 83.63 66.88 90.26 60.47 98.74 60.5 105.46 66.96 111.94 73.2 118.23 79.63 124.87 86.23Z"/>
+          </svg>
+        </div>
+        <div><div class="m-title">DG Helpmate</div><div class="m-sub">Smart Teacher Suite</div></div>
+        <div class="m-spacer"></div>
+        <div class="m-dots">
+          <div class="m-dot" style="background:#ff5f57"></div>
+          <div class="m-dot" style="background:#febc2e"></div>
+          <div class="m-dot" style="background:#28c840"></div>
+        </div>
+      </div>
+      <div class="mockup-body">
+        <div class="m-sidebar">
+          <div class="m-nav">
+            <div class="m-nav-item active"><span class="m-nav-ic">✏</span> <span>Editor</span></div>
+            <div class="m-nav-item"><span class="m-nav-ic">📁</span> <span>Files</span></div>
+            <div class="m-nav-item"><span class="m-nav-ic">📎</span> <span>Snippets</span></div>
+            <div class="m-nav-item"><span class="m-nav-ic">⚙</span> <span>Settings</span></div>
+          </div>
+        </div>
+        <div class="m-editor">
+          <div class="m-toolbar">
+            <button class="m-tb-btn">B</button>
+            <button class="m-tb-btn">I</button>
+            <button class="m-tb-btn">H1</button>
+            <button class="m-tb-btn">H2</button>
+            <button class="m-tb-btn">Q&amp;A</button>
+            <button class="m-tb-btn">Math</button>
+          </div>
+          <div class="m-content">
+            <div class="m-h1" id="type-h1"></div>
+            <div class="m-h2" id="type-h2"></div>
+            <div class="m-txt" id="type-txt"></div>
+            <span class="m-cursor" id="type-cursor"></span>
+          </div>
+          <div class="m-export">
+            <div class="m-fmt-group">
+              <div class="m-fmt">Word</div>
+              <div class="m-fmt active">PPT</div>
+            </div>
+            <div class="m-progress"><div class="m-progress-fill" id="mockup-progress"></div></div>
+            <button class="m-exp-btn" id="mockup-btn">✓ Done!</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS ── -->
+<div class="stats-bar">
+  <div class="stat-item reveal"><div class="stat-num">1-Click</div><div class="stat-lbl">Smart Board PPT Export</div></div>
+  <div class="stat-item reveal"><div class="stat-num">All</div><div class="stat-lbl">Math, Physics, Chem</div></div>
+  <div class="stat-item reveal"><div class="stat-num">100+</div><div class="stat-lbl">Secret AI Prompts</div></div>
+  <div class="stat-item reveal"><div class="stat-num">∞</div><div class="stat-lbl">Batch Export Files</div></div>
+</div>
+
+<!-- ── FEATURES ── -->
+<section class="features" id="features">
+  <div style="text-align:center">
+    <span class="section-tag reveal">App Features</span>
+    <h2 class="section-title reveal">Everything You Need for <span style="color:var(--accent)">Digital Teaching</span></h2>
+    <p class="section-sub reveal" style="margin:0 auto">Stop paying thousands to typists. The DG Helpmate app is your ultimate secret weapon for creating content.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feat-card reveal">
+      <div class="feat-content">
+        <div class="feat-icon">📁</div>
+        <div class="feat-title">Dedicated File Manager</div>
+        <div class="feat-desc">Manage all your notes, chapters, and subjects in one place. Select multiple files and batch-export them to PPT instantly.</div>
+        <span class="feat-tag">✓ Batch Export</span>
+      </div>
+    </div>
+    <div class="feat-card reveal">
+      <div class="feat-content">
+        <div class="feat-icon">🧲</div>
+        <div class="feat-title">The "Secret" Snippets</div>
+        <div class="feat-desc">Access our hidden library of AI prompts, premium font packs, tools, and ready-made templates to supercharge your workflow.</div>
+        <span class="feat-tag">✓ AI Prompts Inside</span>
+      </div>
+    </div>
+    <div class="feat-card reveal">
+      <div class="feat-content">
+        <div class="feat-icon">➗</div>
+        <div class="feat-title">All Subjects Supported</div>
+        <div class="feat-desc">Math equations, Physics formulas, Chemistry reactions, or bilingual Hindi-English text — format it all flawlessly.</div>
+        <span class="feat-tag">✓ Math, Science & Languages</span>
+      </div>
+    </div>
+    <div class="feat-card reveal">
+      <div class="feat-content">
+        <div class="feat-icon">📊</div>
+        <div class="feat-title">Smart Board PPTs</div>
+        <div class="feat-desc">Turn plain typed text into a stunning, fully-formatted PowerPoint presentation ready for your 86-inch Smart Board.</div>
+        <span class="feat-tag">✓ 1-Second Export</span>
+      </div>
+    </div>
+    <div class="feat-card reveal">
+      <div class="feat-content">
+        <div class="feat-icon">🤖</div>
+        <div class="feat-title">Gemini AI Integration</div>
+        <div class="feat-desc">Use Gemini AI to quickly type content in heading and level formats, then paste it here for instant PPT conversion.</div>
+        <span class="feat-tag">✓ No Manual Typing</span>
+      </div>
+    </div>
+    <div class="feat-card reveal">
+      <div class="feat-content">
+        <div class="feat-icon">⚙️</div>
+        <div class="feat-title">Advanced Settings</div>
+        <div class="feat-desc">Customize your output folders, workspace, word limit warnings, themes, and auto-correct rules to match your style.</div>
+        <span class="feat-tag">✓ Full Customization</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="how" id="how">
+  <div style="text-align:center">
+    <span class="section-tag reveal">How It Works</span>
+    <h2 class="section-title reveal">Create Content in <span style="color:var(--accent)">3 Simple Steps</span></h2>
+    <p class="section-sub reveal" style="margin:0 auto">Download the software, write or paste your content, and export instantly.</p>
+  </div>
+  <div class="steps">
+    <div class="step reveal">
+      <div class="step-num">1</div>
+      <div class="step-title">Write / AI Generation</div>
+      <div class="step-desc">Type normally or use Gemini AI to generate notes, MCQs, and Q&A formats in seconds without manual typing.</div>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">2</div>
+      <div class="step-title">Use DG Helpmate</div>
+      <div class="step-desc">Paste the content into the DG Helpmate Editor. Apply templates from our built-in Snippets library.</div>
+    </div>
+    <div class="step reveal">
+      <div class="step-num">3</div>
+      <div class="step-title">1-Second Export</div>
+      <div class="step-desc">Select Word or PPT and click Export. Your highly attractive Smart Board presentation is ready!</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING / COURSE BUNDLE ── -->
+<section class="pricing" id="pricing">
+  <div style="text-align:center">
+    <span class="section-tag reveal">Choose Your Plan</span>
+    <h2 class="section-title reveal">Simple, <span style="color:var(--accent)">One-Time</span> Pricing</h2>
+    <p class="section-sub reveal" style="margin:0 auto">Get the Software License only, or upgrade to our full AI Mastery Course.</p>
+  </div>
+  
+  <div class="pricing-grid">
+    <!-- Basic App License Card -->
+    <div class="price-card reveal">
+      <div class="price-title">App License Only</div>
+      <div class="price-sub">For teachers who only need the software.</div>
+      <div class="price-amount"><span>₹</span>999</div>
+      <div class="price-period">Lifetime Access &middot; 1 PC License</div>
+      <div class="price-features">
+        <div class="price-feat"><span class="price-feat-ic">✓</span> DG Helpmate Software Access</div>
+        <div class="price-feat"><span class="price-feat-ic">✓</span> Unlimited Word & PPT Exports</div>
+        <div class="price-feat"><span class="price-feat-ic">✓</span> Basic Templates included</div>
+        <div class="price-feat"><span class="price-feat-ic">✓</span> Lifetime free updates</div>
+        <div class="price-feat" style="opacity: 0.5"><span class="price-feat-ic">✗</span> <s style="color:var(--text3)">No AI Content Creation Training</s></div>
+        <div class="price-feat" style="opacity: 0.5"><span class="price-feat-ic">✗</span> <s style="color:var(--text3)">No Secret AI Prompts Library</s></div>
+        <div class="price-feat" style="opacity: 0.5"><span class="price-feat-ic">✗</span> <s style="color:var(--text3)">No Thumbnail Design Course</s></div>
+      </div>
+      <button onclick="openModal()" class="price-wa-btn">Buy App License</button>
+    </div>
+
+    <!-- Premium Course + App Bundle Card -->
+    <div class="price-card premium reveal">
+      <span class="price-badge">Most Popular</span>
+      <div class="price-title">Smart Teacher Mastery</div>
+      <div class="price-sub">Complete AI Course + Software Bundle.</div>
+      <div class="price-amount"><span>₹</span>4999</div>
+      <div class="price-period">Lifetime Access &middot; Ultimate Value</div>
+      <div class="price-features">
+        <div class="price-feat"><span class="price-feat-ic">✓</span> <b>FREE DG Helpmate App License</b></div>
+        <div class="price-feat"><span class="price-feat-ic">✓</span> <b>Full AI Course:</b> Learn to make notes, PPTs & PDFs with AI in minutes</div>
+        <div class="price-feat"><span class="price-feat-ic">✓</span> <b>Bonus Module:</b> Viral YouTube Thumbnail & Graphic Design mastery</div>
+        <div class="price-feat"><span class="price-feat-ic">✓</span> <b>Secret Snippets:</b> Access to hidden prompts, premium fonts, and templates</div>
+        <div class="price-feat"><span class="price-feat-ic">✓</span> Complete guide for Math, Physics, Chemistry, Hindi & English</div>
+        <div class="price-feat"><span class="price-feat-ic">✓</span> Priority Premium Support</div>
+      </div>
+      <a href="https://wa.me/919241653369?text=I want to enroll in the Smart Teacher Mastery Course (Rs 4999)." class="price-wa-btn solid" target="_blank">
+        Enroll in Course
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── CUSTOM MODAL FOR 999 APP LICENSE ── -->
+<div id="buyModal" class="modal-overlay">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <h3>Get App License</h3>
+    <p>Please enter your details to proceed to WhatsApp for payment processing (₹999).</p>
+    <form id="buyForm" onsubmit="submitForm(event)">
+      <div class="form-group">
+        <input type="text" id="userName" class="form-input" placeholder="Your Name" required>
+      </div>
+      <div class="form-group">
+        <input type="tel" id="userMobile" class="form-input" placeholder="Mobile Number" required>
+      </div>
+      <div class="form-group">
+        <input type="email" id="userEmail" class="form-input" placeholder="Email Address" required>
+      </div>
+      <button type="submit" class="price-wa-btn solid" style="margin-top:10px;">Continue to WhatsApp</button>
+    </form>
+  </div>
+</div>
+
+<!-- ── FAQ ── -->
+<section class="faq" id="faq">
+  <div style="text-align:center">
+    <span class="section-tag reveal">FAQ</span>
+    <h2 class="section-title reveal">Frequently Asked <span style="color:var(--accent)">Questions</span></h2>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item reveal">
+      <div class="faq-q" onclick="toggleFaq(this)">Do I get the App free with the Mastery Course? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Yes! When you enroll in the Smart Teacher Mastery Course for ₹4999, you get the lifetime license of the DG Helpmate desktop app absolutely FREE. You don't need to pay ₹999 extra.</div>
+    </div>
+    <div class="faq-item reveal">
+      <div class="faq-q" onclick="toggleFaq(this)">Does this app support Math equations and Science symbols? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Yes. The app is fully equipped to handle complex Math equations, Physics formulas, and Chemistry symbols, exporting them perfectly to Word or PPT.</div>
+    </div>
+    <div class="faq-item reveal">
+      <div class="faq-q" onclick="toggleFaq(this)">Can I buy just the software without the course? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Absolutely. If you already know how to format content and design graphics, you can purchase the standalone DG Helpmate App license for a one-time fee of ₹999.</div>
+    </div>
+    <div class="faq-item reveal">
+      <div class="faq-q" onclick="toggleFaq(this)">What are the "Secret Snippets"? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">The Snippets section in the app contains our highly optimized AI prompts, premium font packs, and ready-to-use templates that we don't reveal publicly. It's an exclusive toolkit available for course members.</div>
+    </div>
+    <div class="faq-item reveal">
+      <div class="faq-q" onclick="toggleFaq(this)">Do I need an internet connection to use the app? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Internet is required only once, for the initial license activation. After that the app works 100% offline. An internet connection is used only for license validation checks and automatic updates.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── DOWNLOAD CTA ── -->
+<section class="download-cta">
+  <span class="section-tag reveal">Download</span>
+  <h2 class="cta-title reveal">Download Now — <span style="color:var(--accent)">It's Free!</span></h2>
+  <p class="cta-sub reveal">Try the app first. Get a license whenever you're ready.</p>
+  <div class="reveal">
+    <a href="https://converterdghelpmate.dghelpmate.com/download/DG-Helpmate-Setup-1.0.0.exe" class="btn-primary" style="font-size:18px;padding:18px 42px;display:inline-flex;border-radius:100px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 3v13M6 11l6 6 6-6"/><path d="M3 20h18"/></svg>
+      Download DG Helpmate Software
+    </a>
+    <div class="chrome-notice">
+      <strong>⚠ Chrome security warning?</strong> Click the three dots next to the download → select <strong>"Keep"</strong>. If Windows prompts you, click <strong>"More info" → "Run anyway"</strong>.
+    </div>
+  </div>
+  <div class="dl-info reveal">
+    <span>🖥 <b>Windows 10 / 11</b></span>
+    <span>📦 <b>~74 MB</b></span>
+    <span>🔒 <b>Secure Download</b></span>
+    <span>🆓 <b>Free Trial</b></span>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <div class="footer-logo-icon">
+          <!-- FIXED LOGO: Exact 4-color code -->
+          <svg viewBox="0 0 186 194" width="22" height="22" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#040403" d="M13.75 98.66C13.86 89.91 14.5 81.31 20.13 73.99 20.84 73.07 21.44 72.04 22.26 71.23 38.53 54.99 54.51 38.45 71.21 22.66 85.2 9.43 104.49 9.73 118.45 23.09 134.81 38.75 150.86 54.75 166.63 71.01 175.65 80.31 176.76 91.95 173.53 104.77 170.22 109.75 167.83 114.67 164.21 118.39 149.58 133.42 134.6 148.1 119.69 162.84 104.88 177.48 84.22 177.43 69.38 162.75 56.72 150.23 44.27 137.49 31.44 125.14 23.55 117.55 16.28 109.74 13.75 98.66Z"/>
+            <path fill="#F09E07" d="M13.51 98.98C16.28 109.74 23.55 117.55 31.44 125.14 44.27 137.49 56.72 150.23 69.38 162.75 84.22 177.43 104.88 177.48 119.69 162.84 134.6 148.1 149.58 133.42 164.21 118.39 167.83 114.67 170.22 109.75 173.45 105.19 175.23 116.02 170.77 124.79 163.25 132.31 148.9 146.67 134.07 160.57 120.19 175.36 105.12 191.43 80.83 190.72 66.66 175.47 52.86 160.61 38.02 146.73 23.61 132.45 14.28 123.21 10.48 112.29 13.51 98.98Z"/>
+            <path fill="#F8F8F8" d="M138.47 77.54C151.16 90.22 151.15 102.09 138.68 114.5 129.83 123.31 120.99 132.14 112.1 140.9 101.75 151.09 88.77 151.11 78.46 140.95 68.97 131.6 59.51 122.21 50.11 112.77 40.04 102.66 40.01 89.64 50.02 79.56 59.41 70.11 68.85 60.71 78.34 51.36 88.81 41.04 101.81 41.13 112.37 51.56 121.02 60.11 129.6 68.71 138.47 77.54Z"/>
+            <path fill="#030303" d="M124.87 86.23C131.37 94.12 131.2 101.42 124.45 108.25 118.24 114.54 111.98 120.76 105.66 126.92 98.74 133.66 90.35 133.74 83.5 127.09 77.04 120.82 70.67 114.47 64.36 108.06 57.83 101.4 57.71 92.89 64.15 86.28 70.54 79.71 77.04 73.25 83.63 66.88 90.26 60.47 98.74 60.5 105.46 66.96 111.94 73.2 118.23 79.63 124.87 86.23Z"/>
+          </svg>
+        </div>
+        <span class="footer-title">DG Helpmate</span>
+      </div>
+      <p class="footer-desc">The ultimate Smart Teacher Suite. Learn AI content creation, design thumbnails, and export Smart Board PPTs in seconds.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Software & Plans</h4>
+      <a href="#pricing">App License (₹999)</a>
+      <a href="#pricing">Mastery Course (₹4999)</a>
+      <a href="https://converterdghelpmate.dghelpmate.com/download/DG-Helpmate-Setup-1.0.0.exe">Download Trial App</a>
+      <a href="#features">App Features</a>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <a href="https://wa.me/919241653369" target="_blank">WhatsApp Support</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://wa.me/919241653369?text=I need a license reset" target="_blank">License Reset</a>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <a href="https://wa.me/919241653369" target="_blank">+91 9241653369</a>
+      <a href="https://wa.me/919241653369" target="_blank" class="footer-wa">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.374 0 0 5.373 0 12c0 2.136.557 4.135 1.527 5.875L0 24l6.335-1.505A11.945 11.945 0 0012 24c6.626 0 12-5.374 12-12S18.626 0 12 0zm0 21.818a9.8 9.8 0 01-5.032-1.388l-.36-.214-3.742.889.936-3.634-.236-.374A9.783 9.783 0 012.182 12C2.182 6.58 6.579 2.182 12 2.182c5.42 0 9.818 4.398 9.818 9.818 0 5.421-4.398 9.818-9.818 9.818z"/></svg>
+        Chat on WhatsApp
+      </a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 DG Helpmate. All rights reserved.</span>
+    <span>Made with ❤ for Indian Teachers</span>
+  </div>
+</footer>
+
+<button id="backToTop" title="Go to top">↑</button>
+
+<script>
+// Mobile Navigation Toggle
+const mobileToggle = document.getElementById('mobileToggle');
+const navLinks = document.getElementById('navLinks');
+mobileToggle.addEventListener('click', () => {
+  navLinks.classList.toggle('active');
+  mobileToggle.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+});
+navLinks.addEventListener('click', (e) => {
+  if(e.target.tagName === 'A') {
+    navLinks.classList.remove('active');
+    mobileToggle.textContent = '☰';
+  }
+});
+
+// Sticky Navbar & Back To Top Button
+const navbar = document.getElementById('navbar');
+const backToTop = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 50) {
+    navbar.classList.add('scrolled');
+    backToTop.classList.add('show');
+  } else {
+    navbar.classList.remove('scrolled');
+    backToTop.classList.remove('show');
+  }
+});
+
+// Scroll to Top
+backToTop.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// FAQ Accordion
+function toggleFaq(el) {
+  const item = el.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+// Reveal Animations on Scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { 
+    if (e.isIntersecting) { 
+      e.target.classList.add('visible'); 
+      observer.unobserve(e.target); 
+    } 
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Delay features grid animations
+document.querySelectorAll('.features-grid .feat-card, .feat-list-grid .feat-item').forEach((el, i) => {
+  el.style.transitionDelay = (i % 3 * 0.1) + 's';
+});
+
+// Modal Logic for Form Data Collection & WhatsApp Routing
+function openModal() {
+  document.getElementById('buyModal').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('buyModal').classList.remove('active');
+}
+
+function submitForm(event) {
+  event.preventDefault();
+  
+  const name = document.getElementById('userName').value;
+  const mobile = document.getElementById('userMobile').value;
+  const email = document.getElementById('userEmail').value;
+  
+  // Format the message for WhatsApp
+  const message = `Hello DG Helpmate! I want to buy the App License (₹999).\n\nMy Details:\nName: ${name}\nMobile: ${mobile}\nEmail: ${email}\n\nPlease share the payment details.`;
+  
+  // Encode URI to make it safe for the URL
+  const waUrl = `https://wa.me/919241653369?text=${encodeURIComponent(message)}`;
+  
+  // Open WhatsApp in a new tab
+  window.open(waUrl, '_blank');
+  
+  // Close the modal after submitting
+  closeModal();
+}
+
+// Mockup Typing Animation Logic 
+// 100% Safe JS without innerHTML tags to avoid Hostinger ModSecurity blocks
+const texts = {
+  h1: "# Chapter 4: Motion in a Plane",
+  h2: "## Q1: Define uniform circular motion.",
+  txt: "**Answer:** When an object follows a circular path at a constant speed, the motion is called uniform circular motion."
+};
+
+let iH1 = 0, iH2 = 0, iTxt = 0;
+const speed = 40;
+
+function typeWriter() {
+  const cursor = document.getElementById("type-cursor");
+  const h1El = document.getElementById("type-h1");
+  const h2El = document.getElementById("type-h2");
+  const txtEl = document.getElementById("type-txt");
+  
+  if (iH1 < texts.h1.length) {
+    h1El.textContent += texts.h1.charAt(iH1);
+    h1El.appendChild(cursor); // Move cursor
+    iH1++;
+    setTimeout(typeWriter, speed);
+  } else if (iH2 < texts.h2.length) {
+    h2El.textContent += texts.h2.charAt(iH2);
+    h2El.appendChild(cursor);
+    iH2++;
+    setTimeout(typeWriter, speed);
+  } else if (iTxt < texts.txt.length) {
+    txtEl.textContent += texts.txt.charAt(iTxt);
+    txtEl.appendChild(cursor);
+    iTxt++;
+    setTimeout(typeWriter, speed);
+  } else {
+    // Start fake export progress after typing completes
+    setTimeout(() => {
+      const btn = document.getElementById('mockup-btn');
+      const progress = document.getElementById('mockup-progress');
+      
+      btn.style.opacity = '1';
+      btn.style.visibility = 'visible';
+      btn.textContent = '⏳ Exporting...';
+      btn.style.background = '#28c840';
+      btn.style.color = '#fff';
+      
+      progress.style.width = '100%';
+      
+      setTimeout(() => {
+        btn.textContent = '✓ Done!';
+        setTimeout(resetMockup, 3000); // Loop animation
+      }, 1000);
+    }, 1000);
+  }
+}
+
+function resetMockup() {
+  iH1 = 0; iH2 = 0; iTxt = 0;
+  
+  const cursor = document.getElementById("type-cursor");
+  document.getElementById("type-h1").textContent = "";
+  document.getElementById("type-h2").textContent = "";
+  document.getElementById("type-txt").textContent = "";
+  document.getElementById("type-h1").appendChild(cursor); // Reset cursor position
+  
+  const btn = document.getElementById('mockup-btn');
+  btn.style.opacity = '0';
+  btn.style.visibility = 'hidden';
+  
+  document.getElementById('mockup-progress').style.width = '0%';
+  setTimeout(typeWriter, 1000);
+}
+
+// Start typing animation slightly after load
+window.addEventListener('load', () => {
+  setTimeout(typeWriter, 1500);
+});
+</script>
+</body>
+</html>
